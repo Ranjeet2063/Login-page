@@ -1,64 +1,181 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login Page</title>
-    <style>
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background: linear-gradient(to right, #4facfe, #00f2fe);
-        }
-        .login-card {
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
-        input[type="text"], input[type="password"] {
-            width: 100%;
-            padding: 10px;
-            margin: 10px 0;
-            border: 1px solid #ccc;
-            border-radius: 5px;
-        }
-        input[type="submit"] {
-            background: #4facfe;
-            border: none;
-            color: white;
-            padding: 10px;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background 0.3s;
-        }
-        input[type="submit"]:hover {
-            background: #00f2fe;
-        }
-        .forgot-password {
-            display: block;
-            margin: 10px 0;
-            color: #4facfe;
-            text-decoration: none;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="ShopSphere - responsive e-commerce website with secure auth, cart, wishlist, dashboard, and admin panel demo." />
+  <meta name="keywords" content="ecommerce, online shopping, cart, wishlist, dashboard" />
+  <title>ShopSphere | E-Commerce Website</title>
+  <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+  <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
-    <div class="login-card">
-        <h2>Login</h2>
-        <form action="#">
-            <input type="text" placeholder="Username" required>
-            <input type="password" placeholder="Password" required>
-            <label>
-                <input type="checkbox"> Remember Me
-            </label>
-            <input type="submit" value="Login">
-            <a href="#" class="forgot-password">Forgot Password?</a>
-        </form>
-    </div>
+  <header class="header">
+    <a class="brand" href="#home">ShopSphere</a>
+    <button id="menuBtn" class="icon-btn" aria-label="Toggle menu">☰</button>
+    <nav id="nav" class="nav">
+      <a href="#home">Home</a>
+      <a href="#shop">Shop</a>
+      <a href="#cart">Cart <span id="cartCount">0</span></a>
+      <a href="#wishlist">Wishlist</a>
+      <a href="#dashboard">Dashboard</a>
+      <a href="#admin">Admin</a>
+      <a href="#contact">Contact</a>
+    </nav>
+    <button id="themeBtn" class="icon-btn" aria-label="Toggle dark mode">🌙</button>
+  </header>
+
+  <main>
+    <section id="home" class="section hero">
+      <div>
+        <h1>Modern Shopping Experience</h1>
+        <p>Fast, responsive, secure e-commerce experience with premium products and seamless checkout.</p>
+        <a class="btn" href="#shop">Shop Now</a>
+      </div>
+      <img loading="lazy" src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=1000&q=80&auto=format&fit=crop" alt="Online shopping" />
+    </section>
+
+    <section class="section grid-4" id="categories"></section>
+
+    <section class="section" id="shop">
+      <div class="section-head"><h2>Shop</h2></div>
+      <div class="filters">
+        <input id="searchInput" type="search" placeholder="Search products..." />
+        <select id="categoryFilter"><option value="">All Categories</option></select>
+        <select id="priceFilter">
+          <option value="">All Prices</option>
+          <option value="0-100">$0 - $100</option>
+          <option value="100-250">$100 - $250</option>
+          <option value="250-500">$250 - $500</option>
+        </select>
+        <select id="ratingFilter">
+          <option value="">All Ratings</option>
+          <option value="4">4★ & up</option>
+          <option value="3">3★ & up</option>
+        </select>
+        <select id="sortBy">
+          <option value="featured">Featured</option>
+          <option value="priceAsc">Price: Low to High</option>
+          <option value="priceDesc">Price: High to Low</option>
+          <option value="rating">Top Rated</option>
+          <option value="newest">Newest</option>
+        </select>
+      </div>
+      <div id="productGrid" class="grid-4"></div>
+      <div id="pagination" class="pagination"></div>
+    </section>
+
+    <section id="productDetails" class="section hidden">
+      <button id="backToShop" class="btn ghost">← Back to Shop</button>
+      <div id="productDetailCard"></div>
+      <h3>Related Products</h3>
+      <div id="relatedProducts" class="grid-4"></div>
+    </section>
+
+    <section id="cart" class="section">
+      <div class="section-head"><h2>Cart</h2></div>
+      <div id="cartItems"></div>
+      <div class="coupon-row">
+        <input id="couponInput" type="text" placeholder="Enter coupon (SAVE10)" />
+        <button id="applyCoupon" class="btn">Apply Coupon</button>
+      </div>
+      <div id="orderSummary" class="summary"></div>
+      <a href="#checkout" class="btn">Proceed to Checkout</a>
+    </section>
+
+    <section id="checkout" class="section">
+      <div class="section-head"><h2>Checkout</h2></div>
+      <form id="checkoutForm" class="form-grid">
+        <h3>Billing Details</h3>
+        <input required name="name" placeholder="Full Name" />
+        <input required name="email" type="email" placeholder="Email" />
+        <input required name="phone" placeholder="Phone" />
+        <h3>Shipping Details</h3>
+        <input required name="address" placeholder="Address" />
+        <input required name="city" placeholder="City" />
+        <input required name="zip" placeholder="ZIP Code" />
+        <h3>Payment Method</h3>
+        <select required name="payment">
+          <option value="">Select Payment</option>
+          <option>Stripe</option>
+          <option>PayPal</option>
+          <option>Cash On Delivery</option>
+        </select>
+        <button class="btn" type="submit">Place Order</button>
+      </form>
+    </section>
+
+    <section id="auth" class="section">
+      <div class="auth-tabs">
+        <button data-auth="login" class="btn ghost">Login</button>
+        <button data-auth="register" class="btn ghost">Register</button>
+        <button data-auth="forgot" class="btn ghost">Forgot Password</button>
+      </div>
+      <form id="authForm" class="form-grid"></form>
+    </section>
+
+    <section id="dashboard" class="section">
+      <div class="section-head"><h2>User Dashboard</h2></div>
+      <div class="grid-3">
+        <article class="card"><h3>Profile</h3><p id="profileInfo">Please login to view profile.</p></article>
+        <article class="card"><h3>Order History</h3><ul id="orderHistory"></ul></article>
+        <article class="card"><h3>Saved Addresses</h3><ul id="savedAddresses"></ul></article>
+      </div>
+    </section>
+
+    <section id="wishlist" class="section">
+      <div class="section-head"><h2>Wishlist</h2></div>
+      <div id="wishlistItems" class="grid-4"></div>
+    </section>
+
+    <section id="tracking" class="section">
+      <div class="section-head"><h2>Order Tracking</h2></div>
+      <input id="trackingInput" placeholder="Enter order ID" />
+      <button id="trackBtn" class="btn">Track</button>
+      <p id="trackingResult"></p>
+    </section>
+
+    <section id="about" class="section"><h2>About Us</h2><p>We build trusted global shopping experiences with secure payments and fast delivery.</p></section>
+    <section id="faq" class="section"><h2>FAQ</h2><details><summary>How fast is delivery?</summary><p>2-5 business days globally.</p></details><details><summary>How secure are payments?</summary><p>Payments are processed by trusted providers and sensitive data is never stored in plaintext.</p></details></section>
+
+    <section id="admin" class="section">
+      <div class="section-head"><h2>Admin Dashboard</h2></div>
+      <div class="grid-3">
+        <article class="card"><h3>Sales Analytics</h3><p id="salesAnalytics"></p></article>
+        <article class="card"><h3>Product Management</h3><p>Manage products, categories, inventory, coupons, and reviews.</p></article>
+        <article class="card"><h3>Order & Customer Management</h3><p>Monitor order statuses and customer lifecycle.</p></article>
+      </div>
+    </section>
+
+    <section id="contact" class="section">
+      <div class="section-head"><h2>Contact</h2></div>
+      <form id="contactForm" class="form-grid">
+        <input required placeholder="Name" />
+        <input required type="email" placeholder="Email" />
+        <textarea required placeholder="Message"></textarea>
+        <button class="btn" type="submit">Send</button>
+      </form>
+    </section>
+
+    <section class="section testimonials">
+      <h2>Testimonials</h2>
+      <div class="grid-3">
+        <blockquote class="card">“Excellent quality and fast shipping.” — Aditi</blockquote>
+        <blockquote class="card">“Amazing support and smooth checkout.” — Mateo</blockquote>
+        <blockquote class="card">“Best online shopping UI I've used.” — Liam</blockquote>
+      </div>
+    </section>
+
+    <section class="section newsletter">
+      <h2>Newsletter</h2>
+      <form id="newsletterForm" class="newsletter-form">
+        <input type="email" required placeholder="Enter your email" />
+        <button class="btn" type="submit">Subscribe</button>
+      </form>
+    </section>
+  </main>
+
+  <footer class="footer">© <span id="year"></span> ShopSphere • Multi-language ready • Currency switcher ready • Invoice generation ready</footer>
+  <script defer src="/app.js"></script>
 </body>
 </html>
